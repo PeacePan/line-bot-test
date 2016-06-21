@@ -1,0 +1,17 @@
+{
+  "name": "line-bot-test",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://PeacePan@github.com/PeacePan/line-bot-test.git"
+  },
+  "author": "",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/PeacePan/line-bot-test/issues"
+  },
+  "homepage": "https://github.com/PeacePan/line-bot-test#readme"
+}
