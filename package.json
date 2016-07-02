@@ -1,17 +1,17 @@
 {
-  "name": "line-bot-test",
-  "version": "0.0.1",
+  "name": "peacepan-plugin-line-connect",
+  "version": "0.1.0",
   "description": "",
   "main": "index.js",
   "scripts": {},
   "repository": {
     "type": "git",
-    "url": "git+https://PeacePan@github.com/PeacePan/line-bot-test.git"
+    "url": "git+https://PeacePan@github.com/PeacePan/peacepan-plugin-line-connect.git"
   },
   "author": "",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/PeacePan/line-bot-test/issues"
+    "url": "https://github.com/PeacePan/peacepan-plugin-line-connect/issues"
   },
-  "homepage": "https://github.com/PeacePan/line-bot-test#readme"
+  "homepage": "https://github.com/PeacePan/peacepan-plugin-line-connect#readme"
 }

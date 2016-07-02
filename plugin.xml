@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        id="peacepan-plugin-line-connect"
+        version="0.1.0">
+
+    <name>LineBusinessConnect</name>
+
+    <description>
+      Cordova Plugin For Line Business Connect.
+    </description>
+
+    <license>MIT</license>
+
+    <preference name="CHANNEL_ID" />
+    <preference name="AUTH_SCHEME" />
+
+    <!-- JavaScript interface -->
+    <js-module src="www/line-connect.js" name="LineConnect">
+        <clobbers target="lineConnect" />
+    </js-module>
+
+    <!-- android -->
+    <platform name="android">
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="LineConnect">
+                <param name="android-package" value="com.peacepan.line.LineConnect" />
+                <param name="onload" value="true" />
+            </feature>
+            <access origin="http://dl.profile.line-cdn.net" />
+            <access origin="http://dl.profile.line.naver.jp" />
+            <access origin="https://api.line.me" />
+            <access origin="https://trialbot-api.line.me" />
+            <access origin="https://obs.line-apps.com" />
+            <access origin="https://lcs.naver.jp" />
+            <access origin="https://scdn.line-apps.com" />
+            <access origin="https://access.line.me" />
+            <preference name="android-minSdkVersion" value="15" />
+        </config-file>
+
+        <!-- cordova plugin src files -->
+        <source-file src="src/android/LineConnect.java" target-dir="src/com/peacepan/line" />
+
+        <source-file src="src/android/line-connect.xml" target-dir="res/values" />
+        <config-file target="res/values/line-connect.xml" parent="/*">
+            <integer name="line_channel_id">$CHANNEL_ID</integer>
+            <string name="auth_scheme">$AUTH_SCHEME</string>
+        </config-file>
+
+        <config-file target="AndroidManifest.xml" parent="/manifest">
+            <uses-permission android:name="android.permission.INTERNET" />
+        </config-file>
+
+        <config-file target="AndroidManifest.xml" parent="application">
+            <meta-data android:name="jp.line.sdk.ChannelId" android:value="@integer/line_channel_id"/>
+            <meta-data android:name="jp.line.sdk.AuthScheme" android:value="@string/auth_scheme" />
+            <activity android:name="jp.line.android.sdk.activity.LineAuthCompleteActivity"
+              android:configChanges="keyboard|orientation"
+              android:exported="true"
+              android:screenOrientation="sensor">
+              <intent-filter>
+                  <action android:name="android.intent.action.VIEW" />
+                  <category android:name="android.intent.category.DEFAULT" />
+                  <category android:name="android.intent.category.BROWSABLE" />
+                  <data android:scheme="@string/auth_scheme" />
+              </intent-filter>
+            </activity>
+
+            <activity android:name="jp.line.android.sdk.activity.WebLoginActivity"
+              android:exported="false"
+              android:configChanges="keyboard|orientation"
+              android:screenOrientation="sensor">
+            </activity>
+        </config-file>
+
+        <!-- line-android-sdk [jar]: -->
+        <source-file src="src/android/libs/line-android-sdk.jar" target-dir="libs/" />
+        <!-- line-android-sdk native driver [native libs]: -->
+        <source-file src="src/android/libs/arm64-v8a/libline-sdk-encryption.so" target-dir="libs/arm64-v8a"/>
+        <source-file src="src/android/libs/armeabi/libline-sdk-encryption.so" target-dir="libs/armeabi"/>
+        <source-file src="src/android/libs/armeabi-v7a/libline-sdk-encryption.so" target-dir="libs/armeabi-v7a"/>
+        <source-file src="src/android/libs/mips/libline-sdk-encryption.so" target-dir="libs/mips"/>
+        <source-file src="src/android/libs/mips64/libline-sdk-encryption.so" target-dir="libs/mips64"/>
+        <source-file src="src/android/libs/x86/libline-sdk-encryption.so" target-dir="libs/x86"/>
+        <source-file src="src/android/libs/x86_64/libline-sdk-encryption.so" target-dir="libs/x86_64"/>
+    </platform>
+
+    <!-- ios -->
+    <platform name="ios">
+        <config-file target="config.xml" parent="/*">
+            <feature name="LineConnect">
+                <param name="ios-package" value="LineConnect"/>
+                <param name="onload" value="true" />
+            </feature>
+            <plugin name="LineConnect" value="LineConnect"/>
+            <access origin="http://dl.profile.line-cdn.net" />
+            <access origin="http://dl.profile.line.naver.jp" />
+            <access origin="https://api.line.me" />
+            <access origin="https://trialbot-api.line.me" />
+            <access origin="https://obs.line-apps.com" />
+            <access origin="https://lcs.naver.jp" />
+            <access origin="https://scdn.line-apps.com" />
+            <access origin="https://access.line.me" />
+        </config-file>
+
+        <header-file src="src/ios/LineConnect.h" />
+        <source-file src="src/ios/LineConnect.m" />
+        <source-file src="src/ios/LineAdapter.plist" />
+
+        <config-file target="*-Info.plist" parent="ChannelId">
+          <string>$CHANNEL_ID</string>
+        </config-file>
+
+        <config-file target="*-Info.plist" parent="CFBundleURLTypes">
+          <array>
+            <dict>
+              <key>CFBundleURLSchemes</key>
+              <array>
+                <string>line3rdp.$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+              </array>
+            </dict>
+          </array>
+        </config-file>
+
+        <config-file target="*-Info.plist" parent="LSApplicationQueriesSchemes">
+          <array>
+           <string>lineauth</string>
+           <string>line3rdp.$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+          </array>
+        </config-file>
+
+        <config-file target="*-Info.plist" parent="NSAppTransportSecurity">
+          <dict>
+            <key>NSExceptionDomains</key>
+            <dict>
+                <key>obs.line-apps.com</key>
+                <dict>
+                  <key>NSIncludesSubdomains</key>
+                  <true/>
+                  <key>NSThirdPartyExceptionAllowsInsecureHTTPLoads</key>
+                  <true/>
+                  <key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
+                  <false/>
+                </dict>
+                <key>dl.profile.line-cdn.net</key>
+                <dict>
+                  <key>NSIncludesSubdomains</key>
+                  <true/>
+                  <key>NSThirdPartyExceptionAllowsInsecureHTTPLoads</key>
+                  <true/>
+                  <key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
+                  <false/>
+                </dict>
+                <key>dl.profile.line.naver.jp</key>
+                <dict>
+                  <key>NSIncludesSubdomains</key>
+                  <true/>
+                  <key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
+                  <false/>
+                </dict>
+                <key>lcs.naver.jp</key>
+                <dict>
+                  <key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
+                  <false/>
+                </dict>
+                <key>scdn.line-apps.com</key>
+                <dict>
+                  <key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
+                  <false/>
+                </dict>
+                <key>access.line.me</key>
+                <dict>
+                  <key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
+                  <false/>
+                </dict>
+                <key>api.line.me</key>
+                <dict>
+                  <key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
+                  <false/>
+                </dict>
+            </dict>
+          </dict>
+        </config-file>
+
+        <framework src="Foundation.framework" />
+        <framework src="UIKit.framework" />
+        <framework src="Security.framework" />
+        <framework src="CoreTelephony.framework" />
+        <framework src="CoreGraphics.framework" />
+        <framework src="CoreText.framework" />
+
+        <!-- Line Business Connect framework -->
+        <framework src="src/ios/LineAdapter.framework" custom="true" />
+        <framework src="src/ios/LineAdapterLogin.framework" custom="true" />
+        <framework src="src/ios/LineAdapterUI.bundle" custom="true" />
+        <framework src="src/ios/LineAdapterUI.framework" custom="true" />
+    </platform>
+</plugin>
